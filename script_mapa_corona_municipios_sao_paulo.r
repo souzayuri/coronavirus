@@ -5,7 +5,6 @@
 #' ---
 
 # packages
-# remotes::install_github("liibre/coronabr")
 library(geobr)
 library(sf)
 library(tmap)
@@ -42,7 +41,7 @@ da_mun_spa %>%
   sf::st_drop_geometry()
 
 # map
-map <- tm_shape(da_mun_spa_sp) +
+map <- tm_shape(da_mun_spa) +
   tm_polygons(border.col = "gray40", col = "totalCases", palette = "Reds", textNA = "Sem registros", 
               title = "Casos", n = 5, style = "jenks") +
   tm_graticules(lines = FALSE) +
