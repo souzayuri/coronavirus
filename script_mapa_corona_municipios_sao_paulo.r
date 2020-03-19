@@ -17,36 +17,34 @@ da
 
 # preparate data
 da_mun <- da %>% 
-  tidyr::separate(city, c("name_muni", "abbrev_state"), sep = "/")
+  tidyr::separate(city, c("name_muni", "abbrev_state"), sep = "/") %>% 
+  dplyr::filter(abbrev_state == "SP", is.na(totalCases) == FALSE) %>% 
+  dplyr::mutate(name_muni = stringr::str_to_title(name_muni))
 da_mun
 
 # summary
 tibble::glimpse(da_mun)
 
 # munipality data
-mun <- geobr::read_municipality(code_muni = "all", year = 2018)
+mun <- geobr::read_municipality(code_muni = "all", year = 2018)  %>% 
+  dplyr::filter(abbrev_state == "SP")
 mun
 
 # join data
 da_mun_spa <- mun %>% 
-  dplyr::left_join(da_mun, by = c("name_muni", "abbrev_state"))
+  dplyr::mutate(name_muni = stringr::str_to_title(name_muni)) %>% 
+  dplyr::left_join(da_mun[, c(3, 5)], by = "name_muni")
 da_mun_spa
 
-# summary data
+# summary and confer data
 da_mun_spa %>% 
-  sf::st_drop_geometry() %>% 
-  tibble::glimpse()
+  dplyr::filter(is.na(totalCases) == FALSE) %>% 
+  sf::st_drop_geometry()
 
-# filter sp
-da_mun_spa_sp <- da_mun_spa %>% 
-  dplyr::filter(abbrev_state == "SP") %>% 
-  dplyr::mutate(casos = totalCases)
-da_mun_spa_sp
-  
 # map
 map <- tm_shape(da_mun_spa_sp) +
-  tm_polygons(border.col = "gray90", col = "casos", palette = "Reds", textNA = "Sem registros", 
-              title = "Casos", n = 10, style = "jenks") +
+  tm_polygons(border.col = "gray40", col = "totalCases", palette = "Reds", textNA = "Sem registros", 
+              title = "Casos", n = 5, style = "jenks") +
   tm_graticules(lines = FALSE) +
   tm_compass(size = 2.5) +
   tm_scale_bar(text.size = .8) +
