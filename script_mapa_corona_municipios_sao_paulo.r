@@ -56,6 +56,6 @@ map <- tm_shape(da_mun_spa_sp) +
 map
 
 # export
-tmap::save_tmap(map, "corona_virus_municipios_sp.png")
+tmap::save_tmap(map, "corona_virus_municipios_sp.png", dpi = 300)
 
 # end ---------------------------------------------------------------------
