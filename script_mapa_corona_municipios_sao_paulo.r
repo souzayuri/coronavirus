@@ -51,7 +51,7 @@ map <- tm_shape(da_mun_spa_sp) +
   tm_compass(size = 2.5) +
   tm_scale_bar(text.size = .8) +
   tm_layout(title = "Casos confirmados de \n Corona Vírus \n no Estado de São Paulo \n (18-03-2020)",
-            title.position = c(.7, .9)) +
+            title.position = c(.67, .85)) +
   tm_credits("Fonte: https://labs.wesleycota.com/sarscov2/br", position = c(.2, 0))
 map
 
