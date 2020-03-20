@@ -1,5 +1,5 @@
 #' ---
-#' title: coronavirus municipios de sao paulo
+#' title: coronavirus municipios e estados do brasil
 #' author: mauricio vancine
 #' date: 2020-03-20
 #' ---
