@@ -6,6 +6,7 @@
 
 # packages
 library(geobr)
+library(lubridate)
 library(magick)
 library(sf)
 library(tmap)
@@ -38,7 +39,7 @@ map_state_total <- state_geo_cases %>%
   tm_graticules(lines = FALSE) +
   tm_compass(position = c(.8, .1)) +
   tm_scale_bar(text.size = .8, position = c(.55, .02)) +
-  tm_layout(title = "Casos confirmados de \n COVID19 no Brasil \n (21-03-2020) \n (Total)",
+  tm_layout(title = paste0("Casos confirmados de \n COVID19 no Brasil \n (Total) \n (", lubridate::today(), ")"),
             title.position = c(.65, .9)) +
   tm_credits("Fonte: https://labs.wesleycota.com/sarscov2/br", position = c(.5, 0))
 map_state_total
@@ -54,7 +55,7 @@ map_state_ms <- state_geo_cases %>%
   tm_graticules(lines = FALSE) +
   tm_compass(position = c(.8, .1)) +
   tm_scale_bar(text.size = .8, position = c(.55, .02)) +
-  tm_layout(title = "Casos confirmados de \n COVID19 no Brasil \n (21-03-2020) \n (Ministério da Saúde)",
+  tm_layout(title = paste0("Casos confirmados de \n COVID19 no Brasil \n (Ministério da Saúde) \n (", lubridate::today(), ")"),
             title.position = c(.65, .9)) +
   tm_credits("Fonte: https://labs.wesleycota.com/sarscov2/br", position = c(.5, 0))
 map_state_ms
@@ -70,7 +71,7 @@ map_state_not_ms <- state_geo_cases %>%
   tm_graticules(lines = FALSE) +
   tm_compass(position = c(.8, .1)) +
   tm_scale_bar(text.size = .8, position = c(.55, .02)) +
-  tm_layout(title = "Casos confirmados de \n COVID19 no Brasil \n (21-03-2020) \n (não confirmados pelo \n Ministério da Saúde)",
+  tm_layout(title = paste0("Casos confirmados de \n COVID19 no Brasil \n (não confirmados pelo \n Ministério da Saúde) \n (", lubridate::today(), ")"),
             title.position = c(.68, .9),
             title.size = 1) +
   tm_credits("Fonte: https://labs.wesleycota.com/sarscov2/br", position = c(.5, 0))
@@ -83,11 +84,11 @@ tmap::save_tmap(map_state_not_ms, "covid19_brasil_estados_nao_confirmado_ministe
 map_state_dea <- state_geo_cases %>% 
   tm_shape() +
   tm_polygons(border.col = "gray50", col = "deaths", palette = "Reds", textNA = "Sem registros", 
-              title = "Casos", n = 15, style = "pretty") +
+              title = "Casos", n = 10, style = "pretty") +
   tm_graticules(lines = FALSE) +
   tm_compass(position = c(.8, .1)) +
   tm_scale_bar(text.size = .8, position = c(.55, .02)) +
-  tm_layout(title = "Casos de mortes de \n COVID19 no Brasil \n (21-03-2020)",
+  tm_layout(title = paste0("Casos de mortes de \n COVID19 no Brasil \n (", lubridate::today(), ")"),
             title.position = c(.65, .9)) +
   tm_credits("Fonte: https://labs.wesleycota.com/sarscov2/br", position = c(.5, 0))
 map_state_dea
@@ -126,7 +127,7 @@ map_state_total_time <- tm_shape(state_geo, bbox = sf::st_bbox(state_geo)) +
   tm_graticules(lines = FALSE) +
   tm_compass(position = c(.8, .1)) +
   tm_scale_bar(text.size = .8, position = c(.55, .02)) +
-  tm_layout(title = "Casos confirmados de \n COVID19 no Brasil \n ao longo dos dias",
+  tm_layout(title = "Casos confirmados de \n COVID19 no Brasil \n ao longo dos dias \n (Estado)",
             title.position = c(.6, .9),
             legend.position = c("left", "bottom")) +
   tm_credits("Fonte: https://labs.wesleycota.com/sarscov2/br", position = c(.5, 0))
@@ -168,7 +169,7 @@ map_br_mun <- mun_geo_cases %>%
   tm_graticules(lines = FALSE) +
   tm_compass(position = c(.8, .1)) +
   tm_scale_bar(text.size = .8, position = c(.55, .02)) +
-  tm_layout(title = "Casos confirmados de \n COVID19 no Brasil \n (21-03-2020)",
+  tm_layout(title = paste0("Casos confirmados de \n COVID19 no Brasil \n (", lubridate::today(), ")"),
             title.position = c(.65, .9),
             legend.position = c(.02, .02)) +
   tm_credits("Fonte: https://labs.wesleycota.com/sarscov2/br", position = c(.5, 0))
@@ -193,7 +194,7 @@ map_sp <- tm_shape(mun_geo_cases_sp) +
   tm_graticules(lines = FALSE) +
   tm_compass(size = 2.5) +
   tm_scale_bar(text.size = .8) +
-  tm_layout(title = "Casos confirmados de \n COVID19 no Estado de \n São Paulo \n (21-03-2020)",
+  tm_layout(title = paste0("Casos confirmados de \n COVID19 no Estado de \n São Paulo \n (", lubridate::today(), ")"),
             title.position = c(.68, .85)) +
   tm_credits("Fonte: https://labs.wesleycota.com/sarscov2/br", position = c(.2, 0))
 map_sp
@@ -232,7 +233,7 @@ map_mun_total_time <- tm_shape(state_geo, bbox = sf::st_bbox(state_geo)) +
   tm_graticules(lines = FALSE) +
   tm_compass(position = c(.8, .1)) +
   tm_scale_bar(text.size = .8, position = c(.55, .02)) +
-  tm_layout(title = "Casos confirmados de \n COVID19 no Brasil \n ao longo dos dias",
+  tm_layout(title = "Casos confirmados de \n COVID19 no Brasil \n ao longo dos dias \n (Municípios)",
             title.position = c(.6, .9),
             legend.position = c("left", "bottom")) +
   tm_credits("Fonte: https://labs.wesleycota.com/sarscov2/br", position = c(.5, 0))
@@ -247,21 +248,21 @@ mun_geo_sp <- mun_geo %>%
 
 map_mun_sp_time <- tm_shape(mun_geo_cases_sp, bbox = sf::st_bbox(mun_geo_cases_sp)) +
   tm_polygons(border.col = "gray40", col = "totalCases", palette = "Reds", textNA = "Sem registros", 
-              title = "Casos", n = 10, style = "pretty") +
+              title = "Casos", n = 5, style = "pretty") +
   tm_shape(mun_geo_cen_cases_time %>% dplyr::filter(abbrev_state.x == "SP")) +
   tm_symbols(size = "totalCases", scale = 2, title.size = "Casos", alpha = .5, col = "red", border.col = "darkred") +
   tm_facets(along = "date") +
   tm_graticules(lines = FALSE) +
   tm_compass(position = c(.8, .1)) +
   tm_scale_bar(text.size = .8, position = c(.55, .02)) +
-  tm_layout(title = "Casos confirmados de \n COVID19 em São Paulo \n ao longo dos dias",
-            title.position = c(.6, .9),
+  tm_layout(title = "Casos confirmados de \n COVID19 em São Paulo \n ao longo dos dias \n (Municípios)",
+            title.position = c(.7, .8),
+            title.size = .9,
             legend.position = c("left", "bottom")) +
   tm_credits("Fonte: https://labs.wesleycota.com/sarscov2/br", position = c(.5, 0))
 
 # export
-tmap::tmap_animation(tm = map_mun_sp_time, filename = "covid19_sao_paulo_municipios_evolucao.gif", wi = 2000, he = 2000, delay = 100)
+tmap::tmap_animation(tm = map_mun_sp_time, filename = "covid19_sao_paulo_municipios_evolucao.gif", wi = 2000, he = 1700, delay = 100)
 # magick::image_read("brasil_states.gif")
-
 
 # end ---------------------------------------------------------------------
