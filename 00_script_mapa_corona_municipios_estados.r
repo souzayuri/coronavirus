@@ -1,16 +1,70 @@
 #' ---
-#' title: covid19 municipios do brasil e sao paulo
+#' title: covid19 municipios e estados do brasil
 #' author: mauricio vancine
-#' date: 2021-03-21
+#' date: 2021-03-23
 #' ---
 
 # packages
 library(geobr)
 library(lubridate)
-library(magick)
+library(magick) 
 library(sf)
 library(tmap)
 library(tidyverse)
+
+# packages in linux (ubuntu e linux mint)
+# sudo apt-get install imagemagick
+
+
+# graphics ----------------------------------------------------------------
+state_cases_time <- readr::read_csv("https://raw.githubusercontent.com/wcota/covid19br/master/cases-brazil-states.csv")
+state_cases_time
+
+# figura casos
+fig_casos <- state_cases_time %>% 
+  dplyr::filter(state == "TOTAL") %>% 
+  ggplot() +
+  aes(x = date, y = totalCases) +
+  geom_line(size = 2, color = "steelblue") +
+  geom_label(aes(x = date, y = totalCases, label = totalCases)) +
+  labs(x = "Data", 
+       y = "Número de casos confirmados", 
+       title = "Número de casos confirmados de coronavírus no Brasil") +
+  scale_x_date(date_breaks = "1 day", 
+               date_labels = "%d/%m") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90), 
+        legend.position = "none")
+fig_casos
+ggsave(filename = "covid19_total_casos.png", plot = fig_casos, width = 25, height = 20, units = "cm", dpi = 300)
+
+# figura states
+uf10 <- state_cases_time %>% 
+  filter(date == max(date), totalCases > 10, state != "TOTAL") %>%
+  select(state)
+uf10
+
+fig_uf <- state_cases_time %>% 
+  dplyr::filter(state %in% uf10$state) %>% 
+  dplyr::mutate(nome = reorder(state, -totalCases)) %>% 
+  ggplot(aes(x = date, y = totalCases, col = state)) + 
+  geom_line() +
+  geom_point(size = 2) +
+  labs(x = "Data", 
+       y = "Número de casos confirmados", 
+       title = "Estados com mais de 10 casos", 
+       fill = "UF") +
+  guides(color = guide_legend("UF")) +
+  scale_color_viridis_d() +
+  scale_x_date(date_breaks = "1 day", 
+               date_labels = "%d/%m") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90), 
+        legend.title = element_text(size = 7), 
+        legend.text = element_text(size = 7))
+fig_uf
+
+ggsave(filename = "covid19_total_casos_estados.png", plot = fig_uf, width = 25, height = 20, units = "cm", dpi = 300)
 
 # state -------------------------------------------------------------------
 # import data

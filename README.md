@@ -1,5 +1,13 @@
 # Coronavírus no Brasil
 
+## Crescimento nacional no número de casos
+<img src="covid19_total_casos.png" align="center" alt="" width="600" />
+
+
+## Crescimento do número de casos nos estados mais afetados
+<img src="covid19_total_casos_estados.png" align="center" alt="" width="600" />
+
+
 ## Número de casos total por estado do Brasil
 <img src="covid19_brasil_estados_total.png" align="center" alt="" width="600" />
 
