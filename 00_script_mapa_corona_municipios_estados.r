@@ -245,8 +245,9 @@ tmap::tmap_animation(tm = map_mun_total_time, filename = "covid19_brasil_municip
 mun_geo_sp <- mun_geo %>% 
   dplyr::filter(abbrev_state == "SP")
 
-map_mun_sp_time <- tm_shape(mun_geo_sp, bbox = sf::st_bbox(mun_geo_sp)) +
-  tm_polygons() +
+map_mun_sp_time <- tm_shape(mun_geo_cases_sp, bbox = sf::st_bbox(mun_geo_cases_sp)) +
+  tm_polygons(border.col = "gray40", col = "totalCases", palette = "Reds", textNA = "Sem registros", 
+              title = "Casos", n = 10, style = "pretty") +
   tm_shape(mun_geo_cen_cases_time %>% dplyr::filter(abbrev_state.x == "SP")) +
   tm_symbols(size = "totalCases", scale = 2, title.size = "Casos", alpha = .5, col = "red", border.col = "darkred") +
   tm_facets(along = "date") +
